@@ -6,7 +6,7 @@ const MainLayout: React.FC = ({children}) => {
     return (
         <>
             <Navbar/>
-            <Container style={{marginTop: '12px'}}>
+            <Container style={{marginTop: '32px'}}>
                 {children}
             </Container>
         </>
