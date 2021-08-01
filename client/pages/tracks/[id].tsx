@@ -7,7 +7,7 @@ import {useRouter} from "next/router";
 const TrackPage = () => {
     const router = useRouter()
     const track: ITrack = {_id: '3', name: 'Track 3', artist: "Face", text: 'Lorem10', listens: 3, picture: '',
-        audio: '', comments: [{username: "Pavel", text: "Some comment"}]}
+        audio: '', comments: [{_id: "1", username: "Pavel", text: "Some comment"}]}
     return (
         <MainLayout>
             <Button variant={"outlined"} onClick={()=>router.push('/tracks')}>Go to list</Button>
