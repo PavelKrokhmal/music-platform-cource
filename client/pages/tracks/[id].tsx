@@ -29,7 +29,7 @@ const TrackPage = () => {
             </Grid>
             <div style={{marginTop: '10px'}}>
                 {track.comments.map(comment =>
-                    <Card variant="outlined" style={{padding: "10px 20px"}}>
+                    <Card key={comment._id} variant="outlined" style={{padding: "10px 20px"}}>
                         <div>{comment.username}: <i>{comment.text}</i></div>
                     </Card>
                 )}
