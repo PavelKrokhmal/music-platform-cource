@@ -2,16 +2,22 @@ import React from 'react'
 import MainLayout from "../../layouts/MainLayout";
 import {Box, Button, Card, Grid} from "@material-ui/core";
 import {useRouter} from "next/router";
-import {ITrack} from "../../types/track";
 import TrackList from "../../components/TrackList";
+import {useActions} from "../../hooks/useActions";
+import {useTypedSelector} from "../../hooks/useTypedSelector";
+import {NextThunkDispatch, wrapper} from "../../store";
+import {fetchTracks} from "../../store/actions-creators/track";
 
 const Index = () => {
     const router = useRouter()
-    const tracks: ITrack[] = [
-        {_id: '1', name: 'Track 1', artist: "Face", text: 'Some text 1', listens: 1, picture: '', audio: '', comments: []},
-        {_id: '2', name: 'Track 2', artist: "Face", text: 'Some text 2', listens: 2, picture: '', audio: '', comments: []},
-        {_id: '3', name: 'Track 3', artist: "Face", text: 'Some text 3', listens: 3, picture: '', audio: '', comments: []},
-    ]
+    const {tracks, error} = useTypedSelector(state => state.track)
+
+    if(error) {
+        return <MainLayout>
+            <h1>{error}</h1>
+        </MainLayout>
+    }
+
     return (
         <MainLayout>
             <Grid container>
@@ -30,3 +36,14 @@ const Index = () => {
 }
 
 export default Index
+
+// export const getServerSideProps = wrapper.getServerSideProps(store =>
+//     () => {
+//         store.dispatch()
+//     }
+// )
+
+// export const getServerSideProps = wrapper.getServerSideProps(async ({store})=> {
+//     const dispatch = store.dispatch as NextThunkDispatch
+//     await dispatch(await fetchTracks())
+// })
