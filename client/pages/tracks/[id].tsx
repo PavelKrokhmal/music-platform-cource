@@ -1,18 +1,37 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {ITrack} from "../../types/track";
 import MainLayout from "../../layouts/MainLayout";
 import {Button, Card, Grid, TextField} from "@material-ui/core";
 import {useRouter} from "next/router";
+import {GetServerSideProps} from "next";
+import axios from "axios";
+import Image from "next/image";
+import {useInput} from "../../hooks/useInput";
 
-const TrackPage = () => {
+const TrackPage = ({serverTrack}) => {
     const router = useRouter()
-    const track: ITrack = {_id: '3', name: 'Track 3', artist: "Face", text: 'Lorem10', listens: 3, picture: '',
-        audio: '', comments: [{_id: "1", username: "Pavel", text: "Some comment"}]}
+    const [track, setTrack] = useState<ITrack>(serverTrack)
+    const username = useInput('')
+    const text = useInput('')
+
+    const addComment = async () => {
+        try {
+            const {data} = await axios.post(process.env.serverURL + "tracks/comment", {
+                username: username.value,
+                text: text.value,
+                trackId: track._id
+            })
+            setTrack({...track, comments: [data, ...track.comments]})
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     return (
         <MainLayout>
             <Button variant={"outlined"} onClick={()=>router.push('/tracks')}>Go to list</Button>
             <Grid container style={{margin: '20px 0'}}>
-                <img src={track.picture} width={200} height={200}/>
+                <Image src={process.env.serverURL + track.picture} width={200} height={200}/>
                 <div style={{marginLeft: '20px'}}>
                     <h1>Name: {track.name}</h1>
                     <h1>Artist: {track.artist}</h1>
@@ -23,13 +42,13 @@ const TrackPage = () => {
             <p>{track.text}</p>
             <h1>Comments</h1>
             <Grid container>
-                <TextField style={{marginTop: '10px'}} label={"Your name"} fullWidth></TextField>
-                <TextField style={{marginTop: '10px'}} label={"Comment"} fullWidth multiline rows={4}></TextField>
-                <Button style={{marginTop: '10px'}} variant={'outlined'}>Send</Button>
+                <TextField style={{marginTop: '10px'}} label={"Your name"} fullWidth {...username}></TextField>
+                <TextField style={{marginTop: '10px'}} label={"Comment"} fullWidth multiline rows={4} {...text}></TextField>
+                <Button style={{marginTop: '10px'}} variant={'outlined'} onClick={addComment}>Send</Button>
             </Grid>
             <div style={{marginTop: '10px'}}>
                 {track.comments.map(comment =>
-                    <Card key={comment._id} variant="outlined" style={{padding: "10px 20px"}}>
+                    <Card key={comment._id} variant="outlined" style={{padding: "10px 20px", marginBottom: "4px"}}>
                         <div>{comment.username}: <i>{comment.text}</i></div>
                     </Card>
                 )}
@@ -39,3 +58,19 @@ const TrackPage = () => {
 }
 
 export default TrackPage
+
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
+    const {data} = await axios.get(process.env.serverURL + "tracks/" + params.id)
+
+    if (!data) {
+        return {
+            notFound: true
+        }
+    }
+
+    return {
+        props: {
+            serverTrack: data
+        }
+    }
+}
