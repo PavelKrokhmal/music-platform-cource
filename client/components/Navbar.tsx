@@ -15,16 +15,15 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import {useRouter} from "next/router";
+import {Home, Audiotrack, Album} from "@material-ui/icons";
 
 const drawerWidth = 240;
 
 const menuItems = [
-    {text: 'Home', href: "/"},
-    {text: 'Tracks', href: "/tracks"},
-    {text: 'Albums', href: "/albums"},
+    {text: 'Home', href: "/", Icon: Home},
+    {text: 'Tracks', href: "/tracks", Icon: Audiotrack},
+    {text: 'Albums', href: "/albums", Icon: Album},
 ];
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
@@ -80,7 +79,6 @@ export default function Navbar() {
     const theme = useTheme();
     const router = useRouter();
 
-
     const [open, setOpen] = React.useState(false);
 
     const handleDrawerOpen = () => {
@@ -130,10 +128,10 @@ export default function Navbar() {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {menuItems.map(({text, href}, index) => (
+                    {menuItems.map(({text, href, Icon}, index) => (
                         <ListItem button key={text} onClick={()=>router.push(href)}>
                             <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                <Icon/>
                             </ListItemIcon>
                             <ListItemText primary={text} />
                         </ListItem>

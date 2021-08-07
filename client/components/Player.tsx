@@ -16,17 +16,24 @@ const Player = () => {
 
         if (!audio) {
             audio = new Audio()
-        } else {
-            setAudio()
-            play()
         }
-    }, [active, pause])
 
+        if (pause) {
+            audio.pause()
+        } else {
+            if (audio.activeTrack !== active) {
+                setAudio()
+            }
+            audio.play()
+        }
+
+    }, [active, pause])
 
     const setAudio = () => {
         if (active) {
-            audio.src = active.audio
+            audio.src = process.env.serverURL + active.audio
             audio.volume = volume / 100
+            audio.activeTrack = active
             audio.onloadedmetadata = () => {
                 setDuration(Math.ceil(audio.duration))
             }
@@ -37,13 +44,7 @@ const Player = () => {
     }
 
     const play = () => {
-        if(pause) {
-            playTrack()
-            audio.play()
-        } else {
-            pauseTrack()
-            audio.pause()
-        }
+        pause ? playTrack() : pauseTrack()
     }
 
     const changeVolume = (e: React.ChangeEvent<HTMLInputElement>) => {

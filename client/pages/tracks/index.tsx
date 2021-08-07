@@ -7,6 +7,7 @@ import {useActions} from "../../hooks/useActions";
 import {useTypedSelector} from "../../hooks/useTypedSelector";
 import {NextThunkDispatch, wrapper} from "../../store";
 import {fetchTracks} from "../../store/actions-creators/track";
+import {GetServerSideProps, GetServerSidePropsResult} from "next";
 
 const Index = () => {
     const router = useRouter()
@@ -37,13 +38,10 @@ const Index = () => {
 
 export default Index
 
-// export const getServerSideProps = wrapper.getServerSideProps(store =>
-//     () => {
-//         store.dispatch()
-//     }
-// )
-
-// export const getServerSideProps = wrapper.getServerSideProps(async ({store})=> {
-//     const dispatch = store.dispatch as NextThunkDispatch
-//     await dispatch(await fetchTracks())
-// })
+export const getServerSideProps = wrapper.getServerSideProps(store =>
+    async ({req, res, query, params}) => {
+        const dispatch = store.dispatch as NextThunkDispatch
+        await dispatch(fetchTracks())
+        return {props: {}}
+    }
+);

@@ -34,8 +34,6 @@ export class TrackController {
     return this.trackService.getOne(id);
   }
 
-
-
   @Post()
   @UseInterceptors(
     FileFieldsInterceptor([
