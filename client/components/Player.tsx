@@ -31,7 +31,7 @@ const Player = () => {
 
     const setAudio = () => {
         if (active) {
-            audio.src = process.env.serverURL + active.audio
+            audio.src = process.env.SERVER_URL + active.audio
             audio.volume = volume / 100
             audio.activeTrack = active
             audio.onloadedmetadata = () => {

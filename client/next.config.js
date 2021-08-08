@@ -1,6 +1,6 @@
 module.exports = {
   env: {
-    serverURL: "http://localhost:5000/",
+    SERVER_URL: process.env.SERVER_URL
   },
   images: {
     domains: ['localhost'],

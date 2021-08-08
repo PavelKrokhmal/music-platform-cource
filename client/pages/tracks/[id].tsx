@@ -4,9 +4,9 @@ import MainLayout from "../../layouts/MainLayout";
 import {Button, Card, Grid, TextField} from "@material-ui/core";
 import {useRouter} from "next/router";
 import {GetServerSideProps} from "next";
-import axios from "axios";
 import Image from "next/image";
 import {useInput} from "../../hooks/useInput";
+import API from "../../libs/apiClient";
 
 const TrackPage = ({serverTrack}) => {
     const router = useRouter()
@@ -16,7 +16,7 @@ const TrackPage = ({serverTrack}) => {
 
     const addComment = async () => {
         try {
-            const {data} = await axios.post(process.env.serverURL + "tracks/comment", {
+            const {data} = await API.post(process.env.SERVER_URL + "tracks/comment", {
                 username: username.value,
                 text: text.value,
                 trackId: track._id
@@ -33,7 +33,7 @@ const TrackPage = ({serverTrack}) => {
         >
             <Button variant={"outlined"} onClick={()=>router.push('/tracks')}>Go to list</Button>
             <Grid container style={{margin: '20px 0'}}>
-                <Image src={process.env.serverURL + track.picture} width={200} height={200}/>
+                <Image src={process.env.SERVER_URL + track.picture} width={200} height={200}/>
                 <div style={{marginLeft: '20px'}}>
                     <h1>Name: {track.name}</h1>
                     <h1>Artist: {track.artist}</h1>
@@ -62,7 +62,7 @@ const TrackPage = ({serverTrack}) => {
 export default TrackPage
 
 export const getServerSideProps: GetServerSideProps = async ({params}) => {
-    const {data} = await axios.get(process.env.serverURL + "tracks/" + params.id)
+    const {data} = await API.get("tracks/" + params.id)
 
     if (!data) {
         return {

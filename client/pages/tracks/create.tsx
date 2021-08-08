@@ -4,8 +4,8 @@ import StepWrapper from "../../components/StepWrapper";
 import {Button, Grid, TextField} from "@material-ui/core";
 import FileUpload from "../../components/FileUpload";
 import {useInput} from "../../hooks/useInput";
-import axios from "axios";
 import {useRouter} from "next/router";
+import API from "../../libs/apiClient"
 
 const Create = () => {
     const router = useRouter()
@@ -29,7 +29,7 @@ const Create = () => {
             formData.append('picture', picture)
             formData.append('audio', audio)
 
-            axios.post(process.env.serverURL + "tracks", formData)
+            API.post("tracks", formData)
                 .then((response) => {
                     return router.push("/tracks")
                 })

@@ -26,8 +26,6 @@ const Index = () => {
                 await dispatch(searchTrack(e.target.value))
             }, 500)
         )
-
-
     }
 
     if(error) {
