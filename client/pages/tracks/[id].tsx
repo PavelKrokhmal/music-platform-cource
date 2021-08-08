@@ -28,7 +28,9 @@ const TrackPage = ({serverTrack}) => {
     }
 
     return (
-        <MainLayout>
+        <MainLayout title={"Music platform - " + track.name + " - " + track.artist}
+                    keywords={["Music", "artists", track.name, track.artist].join(", ")}
+        >
             <Button variant={"outlined"} onClick={()=>router.push('/tracks')}>Go to list</Button>
             <Grid container style={{margin: '20px 0'}}>
                 <Image src={process.env.serverURL + track.picture} width={200} height={200}/>

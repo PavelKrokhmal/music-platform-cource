@@ -42,7 +42,7 @@ const Create = () => {
     }
 
     return (
-        <MainLayout>
+        <MainLayout title={"Create track"}>
             <StepWrapper activeStep={activeStep}>
                 {activeStep === 0 && (
                     <Grid container direction={"column"} style={{padding: "20px"}}>
